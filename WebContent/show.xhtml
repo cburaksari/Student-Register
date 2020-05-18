@@ -1,0 +1,166 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>NETAS Project</title>
+</h:head>
+<h:body>
+
+
+	<h:form id="form" enctype="multipart/form-data">
+		<p:growl id="msgs" showDetail="true" />
+
+
+		<p:dataTable id="students" widgetVar="students" var="student"
+			value="#{list.students}" rowKey="#{student.id}" editable="true">
+			<f:facet name="header">
+            Student List
+        </f:facet>
+
+
+			<p:ajax event="rowEdit" listener="#{list.onUpdate}" immediate="true"
+				process="@this" update="form:students" />
+
+
+			<p:column headerText="Name">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="name" value="#{student.name}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Surname">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.surname}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="surname" value="#{student.surname}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Phone-Number">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.phoneNumber}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputMask id="phoneNumber" value="#{student.phoneNumber}"
+							mask="(999) 999-9999" required="true"
+							requiredMessage="Please enter your phone number!" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="City">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.city}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu id="city" value="#{student.city}"
+							style="width:150px" required="true"
+							requiredMessage="City needs to be selected!">
+							<p:ajax listener="#{list.onCityChange(student)}"
+								update="district" />
+							<f:selectItem itemLabel="Select City" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{register.cities}" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="District">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.district}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu id="district" value="#{student.district}"
+							style="width:150px" required="true"
+							requiredMessage="District needs to be selected!">
+							<f:selectItem itemLabel="Select District" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{list.districts}" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Description">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{student.description}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="description" value="#{student.description}"
+							style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="File">
+				<p:cellEditor>
+					<f:facet name="output">
+						<ui:repeat value="#{student.files}" var="file">
+							<p:outputLabel value="#{file.fileName}">
+								<p:spacer />
+							</p:outputLabel>
+						</ui:repeat>
+					</f:facet>
+					<f:facet name="input">
+						<p:commandButton value="Choose File"
+							onclick="PF('dlg').show();#{list.handleFileUpload(student)}"
+							type="button" />
+						<p:dialog header="File" widgetVar="dlg" dynamic="true">
+							<p:panelGrid columns="2">
+								<ui:repeat value="#{list.selectedStudent.files}" var="file">
+									<p:panel>
+										<h:outputText value="Old File/Files:" />
+										<h:outputText value="#{file.fileName}" />
+									</p:panel>
+								</ui:repeat>
+								<p:panel>
+									<p:fileUpload listener="#{list.upload}" mode="advanced"
+										multiple="true" skinSimple="true" />
+									<p:commandButton value="Done"
+										onclick="PF('dlg').hide();"
+										type="button" />
+								</p:panel>
+							</p:panelGrid>
+						</p:dialog>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column>
+				<p:commandButton icon="ui-icon-trash" title="Delete"
+					actionListener="#{list.deleteStudent(student)}" ajax="false" />
+			</p:column>
+
+			<p:column style="width:32px">
+				<p:rowEditor />
+			</p:column>
+		</p:dataTable>
+
+		<div class="ui-g">
+			<div class="ui-g-12">
+				<p:commandButton value="Add new student"
+					styleClass="ui-priority-primary" process="@this" update=":form"
+					action="index" />
+			</div>
+		</div>
+
+	</h:form>
+
+</h:body>
+</html>

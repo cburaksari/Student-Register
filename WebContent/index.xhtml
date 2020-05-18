@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>NETAS Project</title>
+</h:head>
+<h:body>
+
+	<h:form id="form" enctype="multipart/form-data">
+		<p:panel header="Student-Registration" style="width:500px;">
+			<p:messages id="msgs" />
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Name: " for="studentName" />
+				<p:inputText id="studentName" value="#{register.name}" required="true"
+					requiredMessage="Please enter your name!">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+
+				<p:outputLabel value="Surname: " for="studentsurName" />
+				<p:inputText id="studentsurName" value="#{register.surName}"
+					required="true" requiredMessage="Please enter your surname!" />
+
+				<p:outputLabel value="Phone Number: " for="phoneNumber" />
+				<p:inputMask id="phoneNumber" value="#{register.phoneNumber}" mask="(999) 999-9999"
+					required="true" requiredMessage="Please enter your phone number!" />
+
+				<p:outputLabel value="City: " for="city" />
+				<p:selectOneMenu id="city" value="#{register.city}"
+					style="width:150px" required="true" requiredMessage="City needs to be selected!">
+					<p:ajax listener="#{register.onCityChange}" update="district" />
+					<f:selectItem itemLabel="Select City" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{register.cities}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel for="district" value="District: " />
+				<p:selectOneMenu id="district" value="#{register.district}"
+					style="width:150px" required="true" requiredMessage="District needs to be selected!">
+					<f:selectItem itemLabel="Select District" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{register.districts}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Description:" for="Description" />
+				<p:inputTextarea rows="6" cols="33" id="Description" value="#{register.description}"
+					required="true" requiredMessage="Please enter your description!" />
+
+				<p:outputLabel value="File:" />
+				<p:fileUpload value="#{register.files}" mode="simple"
+					skinSimple="true" multiple="true" required="true" requiredMessage="Please select a file!"/>
+
+				<p:commandButton action="show" value="Submit"
+					update="form" ajax="false">
+					<f:actionListener binding="#{register.addStudents()}" />
+				</p:commandButton>
+
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+</html>
