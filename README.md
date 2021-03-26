@@ -1,4 +1,4 @@
-# Netas-Project
+# Student-Register
 
 This project contains a simple CRUD repository implementation with Spring,JSF-Primefaces and Hibernate.
 
