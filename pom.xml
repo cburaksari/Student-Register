@@ -10,7 +10,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<spring-version>4.0.3.RELEASE</spring-version>
-		<hibernate-version>4.0.0.Final</hibernate-version>
+		<hibernate-version>5.4.24.Final</hibernate-version>
 		<hibernate-validator-version>5.1.0.Final</hibernate-validator-version>
 		<jsf-version>2.2.4</jsf-version>
 		<primefaces-version>8.0</primefaces-version>
